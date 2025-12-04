@@ -1,14 +1,21 @@
 package polytech.idu.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class Profile {
+public class Profile implements AdvertisementObserver {
     protected String firstname;
     protected String lastname;
     protected Date birthdate;
     protected String email;
     protected String city;
+    protected ArrayList<String> preference;
+
+    @Override
+    public void onAdvertisementCreated(Advertisement ad) {
+        System.out.println("New advertisement for " + firstname + " " + lastname + ": " + ad.getTitle());
+    }
 
     public String getFirstname() {
         return firstname;
@@ -50,12 +57,21 @@ public class Profile {
         this.city = city;
     }
 
+    public ArrayList<String> getPreference() {
+        return preference;
+    }
+
+    public void addPreference(String preference) {
+        this.preference.add(preference);
+    }
+
     public Profile(String firstname, String lastname, Date birthdate, String email, String city) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
         this.email = email;
         this.city = city;
+        this.preference = new ArrayList<>();
     }
 
     @Override

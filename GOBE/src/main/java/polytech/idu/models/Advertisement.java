@@ -1,7 +1,9 @@
 package polytech.idu.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class Advertisement {
     protected String title;
@@ -12,11 +14,23 @@ public abstract class Advertisement {
     protected Date expire;
     protected int place;
     protected float guarantee;
-
+    
+    
     public String getTitle() {
         return title;
     }
-
+    
+    public Advertisement(String title, String description, Profile holder, float price, Date date, Date expire, int place, float guarantee) {
+        this.title = title;
+        this.description = description;
+        this.holder = holder;
+        this.price = price;
+        this.date = date;
+        this.expire = expire;
+        this.place = place;
+        this.guarantee = guarantee;
+    }
+    
     public void setTitle(String title) {
         this.title = title;
     }
@@ -76,6 +90,29 @@ public abstract class Advertisement {
     public void setGuarantee(float guarantee) {
         this.guarantee = guarantee;
     }
+
+    private static final Set<String> STOP_WORDS = Set.of(
+        "the","a","an","and","or","is","are","on","in","at","for",
+        "to","from","with","of","near","close","very","your","this",
+        "that","by","as","be","it","its"
+    );
+
+
+    public ArrayList<String> getKeywords() {
+        ArrayList<String> keywords = new ArrayList<>();
+
+        String text = (title + " " + description).toLowerCase();
+
+        String[] words = text.replaceAll("[^a-zA-Z0-9 ]", " ").split("\\s+");
+
+        for (String w : words) {
+            if (w.length() < 3) continue; 
+            if (STOP_WORDS.contains(w)) continue;
+            if (!keywords.contains(w)) keywords.add(w); 
+        }
+        return keywords;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -3,11 +3,20 @@ package polytech.idu.models;
 import polytech.idu.models.enums.GoodState;
 import polytech.idu.models.enums.GoodStatus;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class Good extends Advertisement {
+    public Good(String title, String description, Profile holder, float price, Date date, Date expire, int place,
+            float guarantee) {
+        super(title, description, holder, price, date, expire, place, guarantee);
+        //TODO Auto-generated constructor stub
+    }
+
     protected GoodStatus status;
     protected GoodState state;
+
+    
 
     public GoodStatus getStatus() {
         return status;
