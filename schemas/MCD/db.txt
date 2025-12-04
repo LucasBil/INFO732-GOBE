@@ -1,0 +1,81 @@
+Table Profile {
+  id integer
+  firstname varchar
+  lastname varchar
+  birthdate date
+  email varchar
+  city varchar
+}
+
+Table Transaction {
+  id integer
+  sender integer
+  timeslot integer
+  date date
+  currency integer
+}
+
+Table Currency {
+  id integer
+  name varchar
+}
+
+Table Advertisement {
+  id integer
+  title varchar
+  description text
+  holder integer
+  price number
+  date date
+  expire date
+  place integer
+  guarantee number
+  type varchar
+}
+
+Table Message {
+  sender intger
+  receiver integer
+  text text
+}
+
+Table TimeSlot {
+  id integer
+  profile interger
+  advertisement integer
+  ammount number
+  date date
+  status integer
+}
+
+Table TimeSlotSatus {
+  id integer
+  name varchar
+}
+
+Table Good {
+  id integer
+  advertisement integer
+  status varchar
+  state varchar
+}
+
+Ref: "Transaction"."sender" < "Profile"."id"
+
+Ref: "Transaction"."currency" < "Currency"."id"
+
+Ref: "Advertisement"."holder" < "Profile"."id"
+
+Ref: "Message"."sender" < "Profile"."id"
+
+Ref: "Message"."receiver" < "Profile"."id"
+
+Ref: "TimeSlot"."advertisement" < "Advertisement"."id"
+
+Ref: "TimeSlot"."status" < "TimeSlotSatus"."id"
+
+Ref: "Transaction"."timeslot" < "TimeSlot"."id"
+
+Ref: "Good"."advertisement" < "Advertisement"."id"
+
+Ref: "TimeSlot"."profile" < "Profile"."id"
