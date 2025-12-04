@@ -3,6 +3,8 @@ package polytech.idu.models;
 import java.util.Date;
 import java.util.Objects;
 
+import polytech.idu.models.enums.TimeSlotStatus;
+
 public class Profile {
     protected String firstname;
     protected String lastname;
@@ -80,4 +82,19 @@ public class Profile {
                 ", city='" + city + '\'' +
                 '}';
     }
+
+    public void reserverTimeSlot(TimeSlot s){
+        s.setStatus(TimeSlotStatus.PENDING);
+    }
+
+    public void validerTimeSlot(TimeSlot s){
+        s.setStatus(TimeSlotStatus.WAITING_PAYMENT);
+    }
+
+    public void refuserTimeSlot(TimeSlot s){
+        s.setStatus(TimeSlotStatus.AVAILABLE);
+    }
+
+    // public Transaction payer(TimeSlot s){
+    // }
 }
