@@ -1,38 +1,33 @@
+# --- Java ---
+*.class
+*.log
+
+# --- Maven ---
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# --- VS Code ---
 .vscode/
+.settings/
+.classpath
+.project
 
-### Mac OS ###
+# --- OS / IDE divers ---
+# Windows
+Thumbs.db
 .DS_Store
+
+# IntelliJ (au cas où tu l’ouvres un jour)
+.idea/
+*.iml
+out/
+
+# Eclipse (VS Code Java s’en inspire parfois)
+.factorypath
+
+# --- Cache tools ---
+.mvn/timing.properties
