@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Good extends Advertisement {
-    public Good(String title, String description, Profile holder, float price, Date date, Date expire, int place,
+    public Good(String title, String description, Profile holder, float price, Date date, Date expire, String university,
             float guarantee) {
-        super(title, description, holder, price, date, expire, place, guarantee);
+        super(title, description, holder, price, date, expire, university, guarantee);
         //TODO Auto-generated constructor stub
     }
 

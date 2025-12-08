@@ -13,7 +13,7 @@ public class Main {
                 "Dupont",
                 new Date(),
                 "email@example.com",
-                "Paris"
+                "USMB"
         );
 
         Profile seller = new Profile(
@@ -21,23 +21,23 @@ public class Main {
                 "Martin",
                 new Date(),
                 "alice@example.com",
-                "Lyon"
+                "USMB"
         );
 
-        buyer.getPreference().addAll(Arrays.asList("vélo", "adulte"));
+        buyer.getPreference().addAll(Arrays.asList("vélo"));
 
         // Register the profile as an observer
         AdvertisementService.subscribe(buyer);
 
         // Create a new advertisement
         Advertisement ad = new Good(
-                "Vélo à vendre",
-                "vélo Btwin peu utilisé pour adulte",
+                "Prout à vendre",
+                "velo Btwin peu utilisé pour adulte",
                 seller,
                 100.0f,
                 new Date(),
                 new Date(),
-                1,
+                "USMB",
                 50.0f
         );
 

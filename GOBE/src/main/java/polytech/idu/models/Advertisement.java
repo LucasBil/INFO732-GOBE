@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
+import polytech.idu.util.StringSanitizer;
+
 public abstract class Advertisement {
     protected String title;
     protected String description;
@@ -12,7 +14,7 @@ public abstract class Advertisement {
     protected float price;
     protected Date date;
     protected Date expire;
-    protected int place;
+    protected String university;
     protected float guarantee;
     
     
@@ -20,14 +22,14 @@ public abstract class Advertisement {
         return title;
     }
     
-    public Advertisement(String title, String description, Profile holder, float price, Date date, Date expire, int place, float guarantee) {
+    public Advertisement(String title, String description, Profile holder, float price, Date date, Date expire, String university, float guarantee) {
         this.title = title;
         this.description = description;
         this.holder = holder;
         this.price = price;
         this.date = date;
         this.expire = expire;
-        this.place = place;
+        this.university = university;
         this.guarantee = guarantee;
     }
     
@@ -75,12 +77,12 @@ public abstract class Advertisement {
         this.expire = expire;
     }
 
-    public int getPlace() {
-        return place;
+    public String getUniversity() {
+        return university;
     }
 
-    public void setPlace(int place) {
-        this.place = place;
+    public void setUniversity(String university) {
+        this.university = university;
     }
 
     public float getGuarantee() {
@@ -108,23 +110,14 @@ public abstract class Advertisement {
         for (String w : words) {
             if (w.length() < 3) continue; 
             if (STOP_WORDS.contains(w)) continue;
-            if (!keywords.contains(w)) keywords.add(w); 
+            if (!keywords.contains(w)) keywords.add(StringSanitizer.cleanString(w)); 
         }
         return keywords;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (o == null || getClass() != o.getClass()) return false;
-        Advertisement that = (Advertisement) o;
-        return Float.compare(price, that.price) == 0 && place == that.place && Float.compare(guarantee, that.guarantee) == 0 && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(holder, that.holder) && Objects.equals(date, that.date) && Objects.equals(expire, that.expire);
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, holder, price, date, expire, place, guarantee);
+        return Objects.hash(title, description, holder, price, date, expire, university, guarantee);
     }
 
     @Override
@@ -136,7 +129,7 @@ public abstract class Advertisement {
                 ", price=" + price +
                 ", date=" + date +
                 ", expire=" + expire +
-                ", place=" + place +
+                ", university='" + university + '\'' +
                 ", guarantee=" + guarantee +
                 '}';
     }

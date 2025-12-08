@@ -9,7 +9,7 @@ public class Profile implements AdvertisementObserver {
     protected String lastname;
     protected Date birthdate;
     protected String email;
-    protected String city;
+    protected String university;
     protected ArrayList<String> preference;
 
     @Override
@@ -49,12 +49,12 @@ public class Profile implements AdvertisementObserver {
         this.email = email;
     }
 
-    public String getCity() {
-        return city;
+    public String getUniversity() {
+        return university;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setUniversity(String university) {
+        this.university = university;
     }
 
     public ArrayList<String> getPreference() {
@@ -65,12 +65,12 @@ public class Profile implements AdvertisementObserver {
         this.preference.add(preference);
     }
 
-    public Profile(String firstname, String lastname, Date birthdate, String email, String city) {
+    public Profile(String firstname, String lastname, Date birthdate, String email, String university) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
         this.email = email;
-        this.city = city;
+        this.university = university;
         this.preference = new ArrayList<>();
     }
 
@@ -78,12 +78,12 @@ public class Profile implements AdvertisementObserver {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Profile profile = (Profile) o;
-        return Objects.equals(firstname, profile.firstname) && Objects.equals(lastname, profile.lastname) && Objects.equals(birthdate, profile.birthdate) && Objects.equals(email, profile.email) && Objects.equals(city, profile.city);
+        return Objects.equals(firstname, profile.firstname) && Objects.equals(lastname, profile.lastname) && Objects.equals(birthdate, profile.birthdate) && Objects.equals(email, profile.email) && Objects.equals(university, profile.university);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstname, lastname, birthdate, email, city);
+        return Objects.hash(firstname, lastname, birthdate, email, university);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Profile implements AdvertisementObserver {
                 ", lastname='" + lastname + '\'' +
                 ", birthdate=" + birthdate +
                 ", email='" + email + '\'' +
-                ", city='" + city + '\'' +
+                ", university='" + university + '\'' +
                 '}';
     }
 }
