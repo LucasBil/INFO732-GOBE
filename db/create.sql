@@ -52,7 +52,7 @@ CREATE TABLE Advertisement (
     price REAL,
     date DATE,
     expire DATE,
-    place INTEGER,
+    university INTEGER,
     guarantee REAL,
     type VARCHAR(255),
     FOREIGN KEY (holder) REFERENCES Profile(id)

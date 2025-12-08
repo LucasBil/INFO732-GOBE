@@ -18,8 +18,8 @@ public abstract class Advertisement extends Model {
     protected float guarantee;
     protected String imagePath;
 
-    public String getTitle() {
-        return title;
+    public Advertisement(int id) {
+        super(id);
     }
     
     public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire, University university, float guarantee) {
@@ -34,6 +34,10 @@ public abstract class Advertisement extends Model {
         this.guarantee = guarantee;
     }
     
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

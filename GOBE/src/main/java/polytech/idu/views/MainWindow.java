@@ -3,16 +3,16 @@ package polytech.idu.views;
 import javax.swing.*;
 
 import polytech.idu.views.advertisements.HomeView;
-import polytech.idu.views.messages.MessageView;
-import polytech.idu.views.profile.ProfileView;
+// import polytech.idu.views.messages.MessageView;
+// import polytech.idu.views.profile.ProfileView;
 
 import java.awt.*;
 
 public class MainWindow extends JFrame {
 
     private HomeView homeView = new HomeView();
-    private MessageView messageView = new MessageView();
-    private ProfileView profileView = new ProfileView();
+    // private MessageView messageView = new MessageView();
+    // private ProfileView profileView = new ProfileView();
 
     public MainWindow() {
         super("GOBE");
@@ -27,7 +27,7 @@ public class MainWindow extends JFrame {
         // Menu
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Annonces", homeView);
-        tabs.addTab("Messages", messageView);
+        // tabs.addTab("Messages", messageView);
         // tabs.addTab("Profile", profileView);
 
         getContentPane().setLayout(new BorderLayout());

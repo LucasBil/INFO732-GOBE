@@ -50,7 +50,7 @@ public class HomeView extends JPanel {
 
     private void loadAdvertisements() {
         adGrid.removeAll();
-        for (Advertisement ad : controller.getAll()) {
+        for (Advertisement ad : controller.getAllAdvertisements()) {
             adGrid.add(createAdCard(ad));
         }
         adGrid.revalidate();
@@ -61,7 +61,7 @@ public class HomeView extends JPanel {
         String searchText = searchField.getText().toLowerCase();
         adGrid.removeAll();
 
-        List<Advertisement> filteredAds = controller.getAll().stream()
+        List<Advertisement> filteredAds = controller.getAllAdvertisements().stream()
                 .filter(ad -> ad.getTitle().toLowerCase().contains(searchText) || ad.getDescription().toLowerCase().contains(searchText))
                 .collect(Collectors.toList());
 
