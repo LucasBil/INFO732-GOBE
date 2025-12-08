@@ -3,12 +3,12 @@ package polytech.idu.models;
 import java.util.Date;
 import java.util.Objects;
 
-public class Profile {
+public class Profile extends Model {
     protected String firstname;
     protected String lastname;
     protected Date birthdate;
     protected String email;
-    protected String city;
+    protected University university;
 
     public String getFirstname() {
         return firstname;
@@ -42,32 +42,33 @@ public class Profile {
         this.email = email;
     }
 
-    public String getCity() {
-        return city;
+    public University getUniversity() {
+        return university;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setUniversity(University university) {
+        this.university = university;
     }
 
-    public Profile(String firstname, String lastname, Date birthdate, String email, String city) {
+    public Profile(int id, String firstname, String lastname, Date birthdate, String email, University university) {
+        super(id);
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
         this.email = email;
-        this.city = city;
+        this.university = university;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Profile profile = (Profile) o;
-        return Objects.equals(firstname, profile.firstname) && Objects.equals(lastname, profile.lastname) && Objects.equals(birthdate, profile.birthdate) && Objects.equals(email, profile.email) && Objects.equals(city, profile.city);
+        return Objects.equals(firstname, profile.firstname) && Objects.equals(lastname, profile.lastname) && Objects.equals(birthdate, profile.birthdate) && Objects.equals(email, profile.email) && Objects.equals(university, profile.university);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstname, lastname, birthdate, email, city);
+        return Objects.hash(firstname, lastname, birthdate, email, university);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class Profile {
                 ", lastname='" + lastname + '\'' +
                 ", birthdate=" + birthdate +
                 ", email='" + email + '\'' +
-                ", city='" + city + '\'' +
+                ", city='" + university + '\'' +
                 '}';
     }
 }

@@ -9,6 +9,12 @@ public class Good extends Advertisement {
     protected GoodStatus status;
     protected GoodState state;
 
+    public Good(int id, GoodStatus status, GoodState state) {
+        super(id);
+        this.status = status;
+        this.state = state;
+    }
+
     public GoodStatus getStatus() {
         return status;
     }

@@ -3,7 +3,11 @@ package polytech.idu.models;
 import java.util.Date;
 import java.util.Objects;
 
-public abstract class Advertisement {
+public abstract class Advertisement extends Model {
+    public Advertisement(int id) {
+        super(id);
+    }
+
     protected String title;
     protected String description;
     protected Profile holder;
