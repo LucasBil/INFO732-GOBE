@@ -1,5 +1,4 @@
 package polytech.idu.models;
-import polytech.idu.models.*;
 import java.util.Date;
 import java.util.Objects;
 
