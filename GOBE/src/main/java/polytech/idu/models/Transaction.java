@@ -1,6 +1,6 @@
 package polytech.idu.models;
 
-import java.util.Currency;
+import polytech.idu.models.enums.Currency;
 import java.util.Date;
 import java.util.Objects;
 

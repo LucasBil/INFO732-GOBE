@@ -1,9 +1,10 @@
 package polytech.idu.models;
-
+import polytech.idu.models.*;
 import java.util.Date;
 import java.util.Objects;
 
 import polytech.idu.models.enums.TimeSlotStatus;
+import polytech.idu.models.enums.Currency;
 
 public class Profile {
     protected String firstname;
@@ -95,6 +96,19 @@ public class Profile {
         s.setStatus(TimeSlotStatus.AVAILABLE);
     }
 
-    // public Transaction payer(TimeSlot s){
-    // }
+    public Transaction payer(TimeSlot s){
+
+        if (s.getStatus() == TimeSlotStatus.WAITING_PAYMENT){
+            java.util.Date date = new java.util.Date();
+            Transaction t = new Transaction(this , s, date, Currency.EUR);
+            return t;
+        }
+
+        else{
+            System.out.println("Le TimeSlot n'a pas été valider par l'annonceur ! Vous ne pouvez pas payer.");
+            return null;
+        }
+    }
+        
+    
 }
