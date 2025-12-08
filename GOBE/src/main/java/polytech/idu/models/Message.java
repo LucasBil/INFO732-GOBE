@@ -2,12 +2,13 @@ package polytech.idu.models;
 
 import java.util.Objects;
 
-public class Message {
+public class Message extends Model {
     protected Profile sender;
     protected Profile receiver;
     protected String text;
 
-    public Message(Profile sender, Profile receiver, String text) {
+    public Message(int id, Profile sender, Profile receiver, String text) {
+        super(id);
         this.sender = sender;
         this.receiver = receiver;
         this.text = text;

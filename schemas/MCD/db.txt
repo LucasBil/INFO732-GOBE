@@ -4,7 +4,7 @@ Table Profile {
   lastname varchar
   birthdate date
   email varchar
-  city varchar
+  university integer
 }
 
 Table Transaction {
@@ -60,6 +60,19 @@ Table Good {
   state varchar
 }
 
+Table University {
+  id integer
+  name varchar
+  city varchar
+}
+
+Table Alert {
+  id integer
+  profile integer
+  keyword varchars
+  university integer
+}
+
 Ref: "Transaction"."sender" < "Profile"."id"
 
 Ref: "Transaction"."currency" < "Currency"."id"
@@ -79,3 +92,9 @@ Ref: "Transaction"."timeslot" < "TimeSlot"."id"
 Ref: "Good"."advertisement" < "Advertisement"."id"
 
 Ref: "TimeSlot"."profile" < "Profile"."id"
+
+Ref: "Profile"."university" < "University"."id"
+
+Ref: "Alert"."profile" < "Profile"."id"
+
+Ref: "Alert"."university" < "University"."id"

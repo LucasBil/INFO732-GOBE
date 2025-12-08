@@ -1,23 +1,39 @@
 package polytech.idu.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
-public abstract class Advertisement {
+import polytech.idu.util.StringSanitizer;
+
+public abstract class Advertisement extends Model {
     protected String title;
     protected String description;
     protected Profile holder;
     protected float price;
     protected Date date;
     protected Date expire;
-    protected int place;
+    protected University university;
     protected float guarantee;
     protected String imagePath;
 
     public String getTitle() {
         return title;
     }
-
+    
+    public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire, University university, float guarantee) {
+        super(id);
+        this.title = title;
+        this.description = description;
+        this.holder = holder;
+        this.price = price;
+        this.date = date;
+        this.expire = expire;
+        this.university = university;
+        this.guarantee = guarantee;
+    }
+    
     public void setTitle(String title) {
         this.title = title;
     }
@@ -62,12 +78,12 @@ public abstract class Advertisement {
         this.expire = expire;
     }
 
-    public int getPlace() {
-        return place;
+    public University getUniversity() {
+        return university;
     }
 
-    public void setPlace(int place) {
-        this.place = place;
+    public void setUniversity(University university) {
+        this.university = university;
     }
 
     public float getGuarantee() {
@@ -86,17 +102,30 @@ public abstract class Advertisement {
         this.imagePath = imagePath;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    private static final Set<String> STOP_WORDS = Set.of(
+        "the","a","an","and","or","is","are","on","in","at","for",
+        "to","from","with","of","near","close","very","your","this",
+        "that","by","as","be","it","its"
+    );
 
-        if (o == null || getClass() != o.getClass()) return false;
-        Advertisement that = (Advertisement) o;
-        return Float.compare(price, that.price) == 0 && place == that.place && Float.compare(guarantee, that.guarantee) == 0 && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(holder, that.holder) && Objects.equals(date, that.date) && Objects.equals(expire, that.expire);
+    public ArrayList<String> getKeywords() {
+        ArrayList<String> keywords = new ArrayList<>();
+
+        String text = (title + " " + description).toLowerCase();
+
+        String[] words = text.replaceAll("[^a-zA-Z0-9 ]", " ").split("\\s+");
+
+        for (String w : words) {
+            if (w.length() < 3) continue; 
+            if (STOP_WORDS.contains(w)) continue;
+            if (!keywords.contains(w)) keywords.add(StringSanitizer.cleanString(w)); 
+        }
+        return keywords;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, holder, price, date, expire, place, guarantee);
+        return Objects.hash(title, description, holder, price, date, expire, university, guarantee);
     }
 
     @Override
@@ -108,7 +137,7 @@ public abstract class Advertisement {
                 ", price=" + price +
                 ", date=" + date +
                 ", expire=" + expire +
-                ", place=" + place +
+                ", university='" + university + '\'' +
                 ", guarantee=" + guarantee +
                 ", imagePath='" + imagePath + '\'' +
                 '}';
