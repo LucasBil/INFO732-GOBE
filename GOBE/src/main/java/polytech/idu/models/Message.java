@@ -1,60 +1,27 @@
 package polytech.idu.models;
 
-import java.util.Objects;
+import java.util.Date;
 
 public class Message {
-    protected Profile sender;
-    protected Profile receiver;
-    protected String text;
+    private Profile sender;
+    private Profile receiver;
+    private String content;
+    private Date timestamp;
 
-    public Message(Profile sender, Profile receiver, String text) {
+    public Message(Profile sender, Profile receiver, String content) {
         this.sender = sender;
         this.receiver = receiver;
-        this.text = text;
+        this.content = content;
+        this.timestamp = new Date();
     }
 
-    public Profile getSender() {
-        return sender;
-    }
-
-    public void setSender(Profile sender) {
-        this.sender = sender;
-    }
-
-    public Profile getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(Profile receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Message message = (Message) o;
-        return Objects.equals(sender, message.sender) && Objects.equals(receiver, message.receiver) && Objects.equals(text, message.text);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(sender, receiver, text);
-    }
+    public Profile getSender() { return sender; }
+    public Profile getReceiver() { return receiver; }
+    public String getContent() { return content; }
+    public Date getTimestamp() { return timestamp; }
 
     @Override
     public String toString() {
-        return "Message{" +
-                "sender=" + sender +
-                ", receiver=" + receiver +
-                ", text='" + text + '\'' +
-                '}';
+        return "[" + timestamp + "] " + sender.getFirstname() + ": " + content;
     }
 }

@@ -2,6 +2,7 @@ package polytech.idu;
 
 import java.util.Arrays;
 import java.util.Date;
+
 import polytech.idu.models.*;
 
 public class Main {
@@ -40,6 +41,7 @@ public class Main {
                 "USMB",
                 50.0f
         );
+
         // Notify observers
         AdvertisementService.notifyObservers(ad);
 
@@ -59,5 +61,27 @@ public class Main {
 
         // Buyer makes the payment
         buyer.payer(ts);
+
+
+        // ------------------------------------------------------
+        // ---------------------- CHAT SYSTEM --------------------
+        // ------------------------------------------------------
+
+        System.out.println("\n=== CHAT SYSTEM DEMO ===");
+
+        ChatService chat = new ChatService();
+
+        // Buyer writes to the seller
+        chat.send(buyer, seller, "Bonjour, je suis intéressé par votre vélo.");
+        chat.send(seller, buyer, "Bonjour Maxence ! Il est toujours disponible.");
+        chat.send(buyer, seller, "Super, on peut se voir demain ?");
+        chat.send(seller, buyer, "Oui, parfait pour moi.");
+
+        // Print the conversation
+        System.out.println("\nConversation entre " + buyer.getFirstname() + " et " + seller.getFirstname() + " :");
+
+        for (Message m : chat.getConversation(buyer, seller)) {
+            System.out.println(m.getTimestamp() + " | " + m.getSender().getFirstname() + ": " + m.getContent());
+        }
     }
 }
