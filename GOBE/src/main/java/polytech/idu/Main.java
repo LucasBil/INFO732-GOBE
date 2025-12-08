@@ -1,5 +1,6 @@
 package polytech.idu;
 
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.Date;
 
@@ -83,5 +84,22 @@ public class Main {
         for (Message m : chat.getConversation(buyer, seller)) {
             System.out.println(m.getTimestamp() + " | " + m.getSender().getFirstname() + ": " + m.getContent());
         }
+=======
+import java.util.ArrayList;
+
+import polytech.idu.models.University;
+import polytech.idu.services.UniversityService;
+
+public class Main {
+    public static void main(String[] args) {
+        UniversityService service = new UniversityService();
+        ArrayList<University> universities = service.getBy("id", 1);
+        for (University university : universities) {
+            university.setName("USMB");
+            service.update(university);
+            System.out.println(university);
+        }
+        System.out.println("Hello world!");
+>>>>>>> dev
     }
 }

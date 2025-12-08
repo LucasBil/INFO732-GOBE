@@ -4,13 +4,14 @@ import polytech.idu.models.enums.Currency;
 import java.util.Date;
 import java.util.Objects;
 
-public class Transaction {
+public class Transaction extends Model {
     protected Profile sender;
     protected TimeSlot timeslot;
     protected Date date;
     protected Currency currency;
 
-    public Transaction(Profile sender, TimeSlot timeslot, Date date, Currency currency) {
+    public Transaction(int id, Profile sender, TimeSlot timeslot, Date date, Currency currency) {
+        super(id);
         this.sender = sender;
         this.timeslot = timeslot;
         this.date = date;

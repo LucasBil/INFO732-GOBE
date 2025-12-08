@@ -20,7 +20,7 @@ public class AdvertisementService {
         for (AdvertisementObserver obs : observers) {
             if (obs instanceof Profile profile) {
                 for (String keyword : ad.getKeywords()) {
-                    if (profile.getUniversity().equalsIgnoreCase(ad.getUniversity()))
+                    if (profile.getUniversity() == ad.getUniversity())
                         if (profile.getPreference().contains(keyword)) {
                             profile.onAdvertisementCreated(ad);
                             break;

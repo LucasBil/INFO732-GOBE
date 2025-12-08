@@ -4,15 +4,16 @@ import polytech.idu.models.enums.TimeSlotStatus;
 
 import java.util.Date;
 
-public class TimeSlot {
+public class TimeSlot extends Model {
     protected Profile profile;
     protected Advertisement advertisement;
     protected float ammount;
     protected Date date;
     protected TimeSlotStatus status;
-
-    public TimeSlot(Profile profile, Advertisement advertisement, float ammount, Date date, TimeSlotStatus status) {
-        this.profile = null;
+    
+    public TimeSlot(int id, Profile profile, Advertisement advertisement, float ammount, Date date, TimeSlotStatus status) {
+        super(id);
+        this.profile = profile;
         this.advertisement = advertisement;
         this.ammount = ammount;
         this.date = date;
@@ -127,8 +128,4 @@ public class TimeSlot {
             return false;
         return true;
     }
-
-    
-
-
 }
