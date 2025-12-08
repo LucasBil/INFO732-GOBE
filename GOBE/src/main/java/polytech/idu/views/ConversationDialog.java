@@ -20,9 +20,10 @@ public class ConversationDialog extends JDialog {
         messagesModel.addElement("Owner: Thanks for your interest.");
 
         JList<String> messagesList = new JList<>(messagesModel);
+        messagesList.setCellRenderer(new MessageBubbleRenderer());
 
         JTextField input = new JTextField();
-        JButton send = new JButton("Send");
+        JButton send = new JButton("->");
 
         send.addActionListener(e -> {
             String text = input.getText().trim();
@@ -39,5 +40,24 @@ public class ConversationDialog extends JDialog {
         getContentPane().setLayout(new BorderLayout(8,8));
         getContentPane().add(new JScrollPane(messagesList), BorderLayout.CENTER);
         getContentPane().add(bottom, BorderLayout.SOUTH);
+    }
+
+    class MessageBubbleRenderer extends JLabel implements ListCellRenderer<String> {
+        @Override
+        public Component getListCellRendererComponent(JList<? extends String> list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+            setText(value);
+            setOpaque(true);
+
+            if (value.startsWith("You:")) {
+                setHorizontalAlignment(SwingConstants.RIGHT);
+                setBackground(new Color(220, 248, 198)); // Light green for user
+            } else {
+                setHorizontalAlignment(SwingConstants.LEFT);
+                setBackground(Color.WHITE);
+            }
+
+            setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            return this;
+        }
     }
 }

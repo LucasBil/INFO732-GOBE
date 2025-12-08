@@ -1,6 +1,6 @@
 package polytech.idu;
 
-import polytech.idu.views.MainWindow;
+import polytech.idu.views.LoginView;
 
 import javax.swing.*;
 
@@ -11,8 +11,7 @@ public class Main {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignored) {
             }
-            MainWindow mw = new MainWindow();
-            mw.setVisible(true);
+            new LoginView().setVisible(true);
         });
     }
 }
