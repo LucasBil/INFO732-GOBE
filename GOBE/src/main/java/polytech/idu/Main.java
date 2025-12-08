@@ -1,8 +1,8 @@
 package polytech.idu;
 
-import polytech.idu.views.LoginView;
-
 import javax.swing.*;
+
+import polytech.idu.views.profile.LoginView;
 
 public class Main {
     public static void main(String[] args) {

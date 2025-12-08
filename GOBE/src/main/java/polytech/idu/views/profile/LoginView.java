@@ -1,6 +1,7 @@
-package polytech.idu.views;
+package polytech.idu.views.profile;
 
 import polytech.idu.controllers.UserController;
+import polytech.idu.views.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package polytech.idu.views;
+package polytech.idu.views.advertisements;
 
 import javax.swing.*;
 import java.awt.*;

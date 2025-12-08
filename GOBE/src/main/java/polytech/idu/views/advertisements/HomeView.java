@@ -1,4 +1,4 @@
-package polytech.idu.views;
+package polytech.idu.views.advertisements;
 
 import polytech.idu.controllers.AdvertisementController;
 import polytech.idu.models.Advertisement;

@@ -1,4 +1,4 @@
-package polytech.idu.views;
+package polytech.idu.views.messages;
 
 import polytech.idu.controllers.MessageController;
 import polytech.idu.controllers.UserController;

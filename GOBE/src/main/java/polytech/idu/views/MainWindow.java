@@ -1,6 +1,11 @@
 package polytech.idu.views;
 
 import javax.swing.*;
+
+import polytech.idu.views.advertisements.HomeView;
+import polytech.idu.views.messages.MessageView;
+import polytech.idu.views.profile.ProfileView;
+
 import java.awt.*;
 
 public class MainWindow extends JFrame {
