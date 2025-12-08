@@ -5,12 +5,12 @@ import java.util.Objects;
 import polytech.idu.models.enums.TimeSlotStatus;
 import polytech.idu.models.enums.Currency;
 
-public class Profile implements AdvertisementObserver {
+public class Profile extends Model implements AdvertisementObserver {
     protected String firstname;
     protected String lastname;
     protected Date birthdate;
     protected String email;
-    protected String university;
+    protected University university;
     protected ArrayList<String> preference;
 
     @Override
@@ -50,15 +50,15 @@ public class Profile implements AdvertisementObserver {
         this.email = email;
     }
 
-    public String getUniversity() {
+    public University getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
+    public void setUniversity(University university) {
         this.university = university;
     }
 
-    public ArrayList<String> getPreference() {
+     public ArrayList<String> getPreference() {
         return preference;
     }
 
@@ -66,7 +66,8 @@ public class Profile implements AdvertisementObserver {
         this.preference.add(preference);
     }
 
-    public Profile(String firstname, String lastname, Date birthdate, String email, String university) {
+    public Profile(int id, String firstname, String lastname, Date birthdate, String email, University university) {
+        super(id);
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
@@ -125,7 +126,7 @@ public class Profile implements AdvertisementObserver {
 
         if (s.getStatus() == TimeSlotStatus.WAITING_PAYMENT){
             java.util.Date date = new java.util.Date();
-            Transaction t = new Transaction(this , s, date, Currency.EUR);
+            Transaction t = new Transaction(-1, this , s, date, Currency.EUR);
             System.out.println("Paiement effectué pour le TimeSlot " + s + ".");
             return t;
         }

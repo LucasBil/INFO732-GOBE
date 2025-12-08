@@ -7,14 +7,14 @@ import java.util.Set;
 
 import polytech.idu.util.StringSanitizer;
 
-public abstract class Advertisement {
+public abstract class Advertisement extends Model {
     protected String title;
     protected String description;
     protected Profile holder;
     protected float price;
     protected Date date;
     protected Date expire;
-    protected String university;
+    protected University university;
     protected float guarantee;
     
     
@@ -22,7 +22,8 @@ public abstract class Advertisement {
         return title;
     }
     
-    public Advertisement(String title, String description, Profile holder, float price, Date date, Date expire, String university, float guarantee) {
+    public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire, University university, float guarantee) {
+        super(id);
         this.title = title;
         this.description = description;
         this.holder = holder;
@@ -77,11 +78,11 @@ public abstract class Advertisement {
         this.expire = expire;
     }
 
-    public String getUniversity() {
+    public University getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
+    public void setUniversity(University university) {
         this.university = university;
     }
 
