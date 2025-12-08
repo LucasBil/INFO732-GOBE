@@ -2,6 +2,8 @@ package polytech.idu.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import polytech.idu.models.enums.TimeSlotStatus;
+import polytech.idu.models.enums.Currency;
 
 public class Profile implements AdvertisementObserver {
     protected String firstname;
