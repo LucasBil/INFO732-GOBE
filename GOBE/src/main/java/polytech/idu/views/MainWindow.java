@@ -5,13 +5,12 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
 
-    private ProfileView profileView;
-    private AdvertisementView advertisementView;
-    private MessageView messageView;
-    private TransactionView transactionView;
+    private HomeView homeView = new HomeView();
+    private MessageView messageView = new MessageView();
+    private ProfileView profileView = new ProfileView();
 
     public MainWindow() {
-        super("Gobe - Main Window");
+        super("GOBE");
         initUI();
     }
 
@@ -20,19 +19,11 @@ public class MainWindow extends JFrame {
         setSize(900, 600);
         setLocationRelativeTo(null);
 
-        // New views
-        HomeView homeView = new HomeView();
-        PostAdvertisementView postAdView = new PostAdvertisementView();
-        messageView = new MessageView();
-        profileView = new ProfileView();
-        transactionView = new TransactionView();
-
+        // Menu
         JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Home", homeView);
-        tabs.addTab("Post Ad", postAdView);
-        tabs.addTab("Messages", messageView);
-        tabs.addTab("Profile", profileView);
-        tabs.addTab("Transactions", transactionView);
+        tabs.addTab("Annonces", homeView);
+        // tabs.addTab("Messages", messageView);
+        // tabs.addTab("Profile", profileView);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(tabs, BorderLayout.CENTER);

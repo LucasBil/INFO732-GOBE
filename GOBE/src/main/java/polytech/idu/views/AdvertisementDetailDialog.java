@@ -1,44 +1,66 @@
 package polytech.idu.views;
 
 import javax.swing.*;
+
+import polytech.idu.models.Advertisement;
+
 import java.awt.*;
 
 public class AdvertisementDetailDialog extends JDialog {
 
-    public AdvertisementDetailDialog(Window owner, String id, String title) {
-        super(owner, "Advertisement " + id, ModalityType.APPLICATION_MODAL);
-        initUI(id, title);
+    public AdvertisementDetailDialog(Window owner, Advertisement ad) {
+        super(owner, "Annonce " + ad.getTitle(), ModalityType.APPLICATION_MODAL);
+        initUI(ad);
         setSize(500, 350);
         setLocationRelativeTo(owner);
     }
 
-    private void initUI(String id, String title) {
-        JPanel main = new JPanel(new BorderLayout(8,8));
+    private void initUI(Advertisement ad) {
+        JPanel main = new JPanel(new BorderLayout(8, 8));
+        main.add(createImagePanel(), BorderLayout.WEST);
+        main.add(createInfoPanel(ad), BorderLayout.CENTER);
+        main.add(createActionsPanel(), BorderLayout.SOUTH);
 
-        JPanel header = new JPanel(new GridLayout(0,1));
-        header.add(new JLabel("Title: " + title));
-        header.add(new JLabel("Owner: Alice"));
-        header.add(new JLabel("Status: Available"));
+        setContentPane(main);
+    }
 
-        JTextArea desc = new JTextArea("This is a sample description for ad #" + id + ".\nReplace with real description from the model.");
+    private JPanel createImagePanel() {
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.LIGHT_GRAY);
+        imagePanel.setPreferredSize(new Dimension(200, 150));
+        imagePanel.add(new JLabel("Image"));
+        return imagePanel;
+    }
+
+    private JPanel createInfoPanel(Advertisement ad) {
+        JPanel infoPanel = new JPanel(new BorderLayout(5, 5));
+
+        JPanel header = new JPanel(new GridLayout(0, 1));
+        header.add(new JLabel("Title: " + ad.getTitle()));
+        header.add(new JLabel("Holder: " + ad.getHolder()));
+        header.add(new JLabel("Price: " + ad.getPrice()));
+
+        JTextArea desc = new JTextArea(ad.getDescription());
         desc.setLineWrap(true);
         desc.setWrapStyleWord(true);
         desc.setEditable(false);
 
-        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton contact = new JButton("Contact");
-        JButton reserve = new JButton("Reserve");
+        infoPanel.add(header, BorderLayout.NORTH);
+        infoPanel.add(new JScrollPane(desc), BorderLayout.CENTER);
+        return infoPanel;
+    }
 
-        contact.addActionListener(e -> JOptionPane.showMessageDialog(this, "Contact action (open message to owner)"));
-        reserve.addActionListener(e -> JOptionPane.showMessageDialog(this, "Reserve action (start transaction)"));
+    private JPanel createActionsPanel() {
+        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton contact = new JButton("Contacter");
+        JButton reserve = new JButton("Réserver");
+
+        // Temporaire
+        contact.addActionListener(e -> JOptionPane.showMessageDialog(this, "Contacter action"));
+        reserve.addActionListener(e -> JOptionPane.showMessageDialog(this, "Réserver action"));
 
         actions.add(contact);
         actions.add(reserve);
-
-        main.add(header, BorderLayout.NORTH);
-        main.add(new JScrollPane(desc), BorderLayout.CENTER);
-        main.add(actions, BorderLayout.SOUTH);
-
-        setContentPane(main);
+        return actions;
     }
 }

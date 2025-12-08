@@ -1,70 +1,105 @@
 package polytech.idu.views;
 
+import polytech.idu.controllers.AdvertisementController;
+import polytech.idu.models.Advertisement;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeView extends JPanel {
 
-    private JTextField searchField;
-    private JComboBox<String> filterCombo;
-    private JTable table;
+    private JTextField searchField = new JTextField();
+    private JComboBox<String> filterCombo = new JComboBox<>(new String[]{"All", "Available", "Requested", "Completed"});
+    private JPanel adGrid = new JPanel(new GridLayout(0, 4, 10, 10));
+    private AdvertisementController controller = new AdvertisementController();
 
     public HomeView() {
-        initUI();
+        setLayout(new BorderLayout(8, 8));
+        add(createTopPanel(), BorderLayout.NORTH);
+        add(new JScrollPane(adGrid), BorderLayout.CENTER);
+        loadAdvertisements();
     }
 
-    private void initUI() {
-        setLayout(new BorderLayout(8,8));
-
-        JPanel top = new JPanel(new BorderLayout(6,6));
-        searchField = new JTextField();
-        filterCombo = new JComboBox<>(new String[]{"All", "Available", "Requested", "Completed"});
-        JButton searchBtn = new JButton("Search");
-
+    private JPanel createTopPanel() {
         JPanel controls = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        controls.add(new JLabel("Filter:"));
+        controls.add(new JLabel("Filtres:"));
         controls.add(filterCombo);
-        controls.add(searchBtn);
 
-        top.add(new JLabel("Search:"), BorderLayout.WEST);
+        JButton searchButton = new JButton("Rechercher");
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                filterAdvertisements();
+            }
+        });
+        controls.add(searchButton);
+
+        JPanel top = new JPanel(new BorderLayout(6, 6));
+        top.add(new JLabel("Rechercher:"), BorderLayout.WEST);
         top.add(searchField, BorderLayout.CENTER);
         top.add(controls, BorderLayout.EAST);
+        
+        return top;
+    }
 
-        String[] cols = {"ID", "Title", "Owner", "Status"};
-        Object[][] data = {
-                {1, "Old bike", "Alice", "Available"},
-                {2, "Lawn mower", "Bob", "Requested"},
-                {3, "Drill", "Charlie", "Available"}
-        };
+    private void loadAdvertisements() {
+        adGrid.removeAll();
+        for (Advertisement ad : controller.getAll()) {
+            adGrid.add(createAdCard(ad));
+        }
+        adGrid.revalidate();
+        adGrid.repaint();
+    }
 
-        DefaultTableModel model = new DefaultTableModel(data, cols) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+    private void filterAdvertisements() {
+        String searchText = searchField.getText().toLowerCase();
+        adGrid.removeAll();
 
-        table = new JTable(model);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.addMouseListener(new MouseAdapter() {
+        List<Advertisement> filteredAds = controller.getAll().stream()
+                .filter(ad -> ad.getTitle().toLowerCase().contains(searchText) || ad.getDescription().toLowerCase().contains(searchText))
+                .collect(Collectors.toList());
+
+        for (Advertisement ad : filteredAds) {
+            adGrid.add(createAdCard(ad));
+        }
+
+        adGrid.revalidate();
+        adGrid.repaint();
+    }
+
+    private JPanel createAdCard(Advertisement ad) {
+        JPanel card = new JPanel(new BorderLayout(5, 5));
+        card.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        card.add(new JLabel(ad.getTitle(), SwingConstants.CENTER), BorderLayout.NORTH);
+
+        JPanel imagePlaceholder = new JPanel();
+        imagePlaceholder.setBackground(Color.LIGHT_GRAY);
+        imagePlaceholder.setPreferredSize(new Dimension(100, 80));
+        JLabel imageLabel = ad.getImagePath() != null ? new JLabel(new ImageIcon(ad.getImagePath())) : new JLabel("No Img");
+        imagePlaceholder.add(imageLabel);
+        card.add(imagePlaceholder, BorderLayout.CENTER);
+
+        JTextArea descArea = new JTextArea(ad.getDescription());
+        descArea.setWrapStyleWord(true);
+        descArea.setLineWrap(true);
+        descArea.setEditable(false);
+        card.add(new JScrollPane(descArea), BorderLayout.SOUTH);
+
+        card.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    int row = table.getSelectedRow();
-                    if (row >= 0) {
-                        Object id = table.getValueAt(row, 0);
-                        Object title = table.getValueAt(row, 1);
-                        AdvertisementDetailDialog dlg = new AdvertisementDetailDialog(SwingUtilities.getWindowAncestor(HomeView.this), String.valueOf(id), String.valueOf(title));
-                        dlg.setVisible(true);
-                    }
+                    new AdvertisementDetailDialog(SwingUtilities.getWindowAncestor(HomeView.this), ad).setVisible(true);
                 }
             }
         });
 
-        add(top, BorderLayout.NORTH);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        return card;
     }
 }

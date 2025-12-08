@@ -12,6 +12,7 @@ public abstract class Advertisement {
     protected Date expire;
     protected int place;
     protected float guarantee;
+    protected String imagePath;
 
     public String getTitle() {
         return title;
@@ -77,6 +78,14 @@ public abstract class Advertisement {
         this.guarantee = guarantee;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @Override
     public boolean equals(Object o) {
 
@@ -101,6 +110,7 @@ public abstract class Advertisement {
                 ", expire=" + expire +
                 ", place=" + place +
                 ", guarantee=" + guarantee +
+                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 }
