@@ -40,8 +40,24 @@ public class Main {
                 "USMB",
                 50.0f
         );
-
         // Notify observers
         AdvertisementService.notifyObservers(ad);
+
+        TimeSlot ts = new TimeSlot(
+                buyer,
+                ad,
+                100.0f,
+                new Date(),
+                polytech.idu.models.enums.TimeSlotStatus.AVAILABLE
+        );
+
+        // Buyer reserves the timeslot
+        buyer.reserverTimeSlot(ts);
+
+        // Seller validates the reservation
+        seller.validerTimeSlot(ts);
+
+        // Buyer makes the payment
+        buyer.payer(ts);
     }
 }

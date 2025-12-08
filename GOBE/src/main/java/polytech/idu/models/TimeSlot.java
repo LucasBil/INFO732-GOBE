@@ -12,7 +12,7 @@ public class TimeSlot {
     protected TimeSlotStatus status;
 
     public TimeSlot(Profile profile, Advertisement advertisement, float ammount, Date date, TimeSlotStatus status) {
-        this.profile = profile;
+        this.profile = null;
         this.advertisement = advertisement;
         this.ammount = ammount;
         this.date = date;
@@ -57,6 +57,26 @@ public class TimeSlot {
 
     public void setStatus(TimeSlotStatus status) {
         this.status = status;
+        this.statusChanged();
+    }
+
+    public void statusChanged(){
+        // Notify the profile about the status change
+        if (this.profile != null) {
+            switch (this.status) {
+                case PENDING:
+                    System.out.println("Le TimeSlot est en attente de validation par l'annonceur.");
+                    break;
+                case WAITING_PAYMENT:
+                    System.out.println("Le TimeSlot est en attente de paiement.");
+                    break;
+                case AVAILABLE:
+                    System.out.println("Le TimeSlot est disponible.");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override

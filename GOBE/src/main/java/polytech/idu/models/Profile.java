@@ -100,14 +100,25 @@ public class Profile implements AdvertisementObserver {
 
     public void reserverTimeSlot(TimeSlot s){
         s.setStatus(TimeSlotStatus.PENDING);
+        s.setProfile(this);
     }
 
     public void validerTimeSlot(TimeSlot s){
         s.setStatus(TimeSlotStatus.WAITING_PAYMENT);
+        s.getProfile().bookingValidated(s);
     }
 
     public void refuserTimeSlot(TimeSlot s){
         s.setStatus(TimeSlotStatus.AVAILABLE);
+        s.getProfile().bookingRefused(s);
+    }
+
+    public void bookingValidated(TimeSlot s){
+        System.out.println("Le TimeSlot " + s + " a été validé par l'annonceur. Vous pouvez procéder au paiement.");
+    }
+
+    public void bookingRefused(TimeSlot s){
+        System.out.println("Le TimeSlot " + s + " a été refusé par l'annonceur. Veuillez choisir un autre créneau.");
     }
 
     public Transaction payer(TimeSlot s){
@@ -115,6 +126,7 @@ public class Profile implements AdvertisementObserver {
         if (s.getStatus() == TimeSlotStatus.WAITING_PAYMENT){
             java.util.Date date = new java.util.Date();
             Transaction t = new Transaction(this , s, date, Currency.EUR);
+            System.out.println("Paiement effectué pour le TimeSlot " + s + ".");
             return t;
         }
 
