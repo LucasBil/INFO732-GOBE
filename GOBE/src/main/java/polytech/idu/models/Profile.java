@@ -10,7 +10,7 @@ public class Profile extends Model implements AdvertisementObserver {
     protected String lastname;
     protected Date birthdate;
     protected String email;
-    protected University university;
+    protected String university;
     protected ArrayList<String> preference;
 
     @Override
@@ -50,11 +50,11 @@ public class Profile extends Model implements AdvertisementObserver {
         this.email = email;
     }
 
-    public University getUniversity() {
+    public String getUniversity() {
         return university;
     }
 
-    public void setUniversity(University university) {
+    public void setUniversity(String university) {
         this.university = university;
     }
 
@@ -66,7 +66,7 @@ public class Profile extends Model implements AdvertisementObserver {
         this.preference.add(preference);
     }
 
-    public Profile(int id, String firstname, String lastname, Date birthdate, String email, University university) {
+    public Profile(int id, String firstname, String lastname, Date birthdate, String email, String university) {
         super(id);
         this.firstname = firstname;
         this.lastname = lastname;

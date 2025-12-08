@@ -1,6 +1,7 @@
 package polytech.idu.models;
 
 import java.util.ArrayList;
+import java.util.Date; // Import Date
 import java.util.List;
 
 public class Conversation {
@@ -21,7 +22,9 @@ public class Conversation {
 
     public void sendMessage(Profile sender, String content) {
         Profile receiver = sender.equals(p1) ? p2 : p1;
-        Message msg = new Message(sender, receiver, content);
+        
+        Message msg = new Message(-1, sender, receiver, content, new Date());
+        
         messages.add(msg);
     }
 

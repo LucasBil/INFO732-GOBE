@@ -2,23 +2,23 @@ package polytech.idu.models;
 
 import java.util.Date;
 
-<<<<<<< HEAD
-public class Message {
+public class Message extends Model {
     private Profile sender;
     private Profile receiver;
     private String content;
     private Date timestamp;
 
-    public Message(Profile sender, Profile receiver, String content) {
-=======
-public class Message extends Model {
-    protected Profile sender;
-    protected Profile receiver;
-    protected String text;
-
-    public Message(int id, Profile sender, Profile receiver, String text) {
+    // Full constructor
+    public Message(int id, Profile sender, Profile receiver, String content, Date timestamp) {
         super(id);
->>>>>>> dev
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+        this.timestamp = timestamp;
+    }
+
+    public Message(Profile sender, Profile receiver, String content) {
+        super(-1); 
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
@@ -29,6 +29,7 @@ public class Message extends Model {
     public Profile getReceiver() { return receiver; }
     public String getContent() { return content; }
     public Date getTimestamp() { return timestamp; }
+    public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
 
     @Override
     public String toString() {

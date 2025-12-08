@@ -1,16 +1,18 @@
 package polytech.idu;
 
-<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.Date;
 
 import polytech.idu.models.*;
+import polytech.idu.services.AdvertisementService;
+import polytech.idu.services.MessageService;
+
 
 public class Main {
     public static void main(String[] args) {
 
         // Create a profile with interest in "vélo" and "adulte"
-        Profile buyer = new Profile(
+        Profile buyer = new Profile(-1,
                 "Maxence",
                 "Dupont",
                 new Date(),
@@ -18,7 +20,7 @@ public class Main {
                 "USMB"
         );
 
-        Profile seller = new Profile(
+        Profile seller = new Profile(-1,
                 "Alice",
                 "Martin",
                 new Date(),
@@ -32,7 +34,7 @@ public class Main {
         AdvertisementService.subscribe(buyer);
 
         // Create a new advertisement
-        Advertisement ad = new Good(
+        Advertisement ad = new Good(-1,
                 "Prout à vendre",
                 "velo Btwin peu utilisé pour adulte",
                 seller,
@@ -46,7 +48,7 @@ public class Main {
         // Notify observers
         AdvertisementService.notifyObservers(ad);
 
-        TimeSlot ts = new TimeSlot(
+        TimeSlot ts = new TimeSlot(-1,
                 buyer,
                 ad,
                 100.0f,
@@ -70,7 +72,7 @@ public class Main {
 
         System.out.println("\n=== CHAT SYSTEM DEMO ===");
 
-        ChatService chat = new ChatService();
+        MessageService chat = new MessageService();
 
         // Buyer writes to the seller
         chat.send(buyer, seller, "Bonjour, je suis intéressé par votre vélo.");
@@ -84,22 +86,5 @@ public class Main {
         for (Message m : chat.getConversation(buyer, seller)) {
             System.out.println(m.getTimestamp() + " | " + m.getSender().getFirstname() + ": " + m.getContent());
         }
-=======
-import java.util.ArrayList;
-
-import polytech.idu.models.University;
-import polytech.idu.services.UniversityService;
-
-public class Main {
-    public static void main(String[] args) {
-        UniversityService service = new UniversityService();
-        ArrayList<University> universities = service.getBy("id", 1);
-        for (University university : universities) {
-            university.setName("USMB");
-            service.update(university);
-            System.out.println(university);
-        }
-        System.out.println("Hello world!");
->>>>>>> dev
     }
 }

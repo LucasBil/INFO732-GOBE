@@ -1,7 +1,11 @@
-package polytech.idu.models;
+package polytech.idu.services;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import polytech.idu.models.Advertisement;
+import polytech.idu.models.AdvertisementObserver;
+import polytech.idu.models.Profile;
 
 public class AdvertisementService {
 

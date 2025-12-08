@@ -1,11 +1,12 @@
 package polytech.idu.views;
 
 import polytech.idu.models.Profile;
-import polytech.idu.models.ChatService;
+import polytech.idu.services.MessageService;
 import polytech.idu.models.Message;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Date;
 
 // Swing chat UI
 public class SwingChatUI extends JFrame {
@@ -17,12 +18,12 @@ public class SwingChatUI extends JFrame {
 
     private Profile me;
     private Profile other;
-    private ChatService chatService;
+    private MessageService messageService;
 
-    public SwingChatUI(Profile me, Profile other, ChatService chatService) {
+    public SwingChatUI(Profile me, Profile other, MessageService messageService) {
         this.me = me;
         this.other = other;
-        this.chatService = chatService;
+        this.messageService = messageService;
 
         setTitle("Chat: " + me.getFirstname() + " ↔ " + other.getFirstname());
         setSize(450, 600);
@@ -53,7 +54,7 @@ public class SwingChatUI extends JFrame {
     }
 
     private void loadConversation() {
-        List<Message> conv = chatService.getConversation(me, other);
+        List<Message> conv = messageService.getConversation(me, other);
         for (Message m : conv) {
             addMessageBubble(m);
         }
@@ -64,7 +65,7 @@ public class SwingChatUI extends JFrame {
         if (text.isEmpty()) return;
 
         // Send message from "me"
-        chatService.send(me, other, text);
+        messageService.send(me, other, text);
         addMessageBubble(new Message(me, other, text));
         inputField.setText("");
     }
@@ -89,18 +90,18 @@ public class SwingChatUI extends JFrame {
 
     // Test main
     public static void main(String[] args) {
-        Profile buyer = new Profile("Maxence", "Dupont", null, "max@example.com", "USMB");
-        Profile seller = new Profile("Alice", "Martin", null, "alice@example.com", "USMB");
-        ChatService chat = new ChatService();
+        Profile buyer = new Profile(-1, "Maxence", "Dupont", new Date(), "max@example.com", "USMB");
+        Profile seller = new Profile(-1, "Alice", "Martin", new Date(), "alice@example.com", "USMB");
+        MessageService messageService = new MessageService();
 
         // Preload some messages
-        chat.send(buyer, seller, "Bonjour, je suis intéressé par votre vélo.");
-        chat.send(seller, buyer, "Bonjour Maxence ! Il est toujours disponible.");
-        chat.send(buyer, seller, "Super, on peut se voir demain ?");
-        chat.send(seller, buyer, "Oui, parfait pour moi.");
+        messageService.send(buyer, seller, "Bonjour, je suis intéressé par votre vélo.");
+        messageService.send(seller, buyer, "Bonjour Maxence ! Il est toujours disponible.");
+        messageService.send(buyer, seller, "Super, on peut se voir demain ?");
+        messageService.send(seller, buyer, "Oui, parfait pour moi.");
 
         SwingUtilities.invokeLater(() -> {
-            SwingChatUI chatUI = new SwingChatUI(buyer, seller, chat);
+            SwingChatUI chatUI = new SwingChatUI(buyer, seller, messageService);
             chatUI.setVisible(true);
         });
     }

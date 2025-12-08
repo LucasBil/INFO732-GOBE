@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Good extends Advertisement {
-    public Good(int id, String title, String description, Profile holder, float price, Date date, Date expire, University university,
+    public Good(int id, String title, String description, Profile holder, float price, Date date, Date expire, String university,
             float guarantee) {
         super(id, title, description, holder, price, date, expire, university, guarantee);
     }

@@ -14,7 +14,7 @@ public abstract class Advertisement extends Model {
     protected float price;
     protected Date date;
     protected Date expire;
-    protected University university;
+    protected String university;
     protected float guarantee;
     
     
@@ -22,7 +22,7 @@ public abstract class Advertisement extends Model {
         return title;
     }
     
-    public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire, University university, float guarantee) {
+    public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire, String university, float guarantee) {
         super(id);
         this.title = title;
         this.description = description;
@@ -78,11 +78,11 @@ public abstract class Advertisement extends Model {
         this.expire = expire;
     }
 
-    public University getUniversity() {
+    public String getUniversity() {
         return university;
     }
 
-    public void setUniversity(University university) {
+    public void setUniversity(String university) {
         this.university = university;
     }
 
