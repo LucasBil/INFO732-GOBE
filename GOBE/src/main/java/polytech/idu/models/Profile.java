@@ -2,20 +2,64 @@ package polytech.idu.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
-import polytech.idu.models.enums.TimeSlotStatus;
-import polytech.idu.models.enums.Currency;
+import polytech.idu.annotations.Column;
+import polytech.idu.annotations.ManyToOne;
+import polytech.idu.annotations.Table;
+import polytech.idu.events.AdvertisementObserver;
 
-public class Profile extends Model implements AdvertisementObserver {
+@Table(
+    name = "Profile",
+    dependencies = {University.class}
+)
+public class Profile implements AdvertisementObserver {
+    @Column(name = "id", type = "INTEGER", primary = true, autoIncrement = true)
+    protected int id;
+
+    @Column(name = "firstname", type = "TEXT")
     protected String firstname;
+
+    @Column(name = "lastname", type = "TEXT")
     protected String lastname;
+
+    @Column(name = "birthdate", type = "DATE")
     protected Date birthdate;
+
+    @Column(name = "email", type = "TEXT")
     protected String email;
+
+    @ManyToOne(
+        target = University.class,
+        columnName = "university",
+        refColumn = "id"
+    )
     protected University university;
+
+    @Column(name = "preference", type = "TEXT")
     protected ArrayList<String> preference;
 
     @Override
     public void onAdvertisementCreated(Advertisement ad) {
         System.out.println("New advertisement for " + firstname + " " + lastname + ": " + ad.getTitle());
+    }
+
+    public Profile() {}
+    
+    public Profile(int id, String firstname, String lastname, Date birthdate, String email, University university) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.university = university;
+        this.preference = new ArrayList<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstname() {
@@ -66,16 +110,6 @@ public class Profile extends Model implements AdvertisementObserver {
         this.preference.add(preference);
     }
 
-    public Profile(int id, String firstname, String lastname, Date birthdate, String email, University university) {
-        super(id);
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthdate = birthdate;
-        this.email = email;
-        this.university = university;
-        this.preference = new ArrayList<>();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -100,17 +134,17 @@ public class Profile extends Model implements AdvertisementObserver {
     }
 
     public void reserverTimeSlot(TimeSlot s){
-        s.setStatus(TimeSlotStatus.PENDING);
+        s.setStatus(new TimeSlotStatus(-1, "PENDING"));
         s.setProfile(this);
     }
 
     public void validerTimeSlot(TimeSlot s){
-        s.setStatus(TimeSlotStatus.WAITING_PAYMENT);
+        s.setStatus(new TimeSlotStatus(-1, "WAITING_PAYMENT"));
         s.getProfile().bookingValidated(s);
     }
 
     public void refuserTimeSlot(TimeSlot s){
-        s.setStatus(TimeSlotStatus.AVAILABLE);
+        s.setStatus(new TimeSlotStatus(-1, "AVAILABLE"));
         s.getProfile().bookingRefused(s);
     }
 
@@ -124,9 +158,9 @@ public class Profile extends Model implements AdvertisementObserver {
 
     public Transaction payer(TimeSlot s){
 
-        if (s.getStatus() == TimeSlotStatus.WAITING_PAYMENT){
+        if (s.getStatus() == new TimeSlotStatus(-1, "WAITING_PAYMENT")){
             java.util.Date date = new java.util.Date();
-            Transaction t = new Transaction(-1, this , s, date, Currency.EUR);
+            Transaction t = new Transaction(-1, this , s, date, new Currency(-1, "EUR"));
             System.out.println("Paiement effectué pour le TimeSlot " + s + ".");
             return t;
         }

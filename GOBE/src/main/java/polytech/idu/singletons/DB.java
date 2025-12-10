@@ -38,9 +38,7 @@ public class DB {
     public ResultSet query(String sql) {
         try {
             PreparedStatement stmt = prepare(sql);
-            ResultSet result = stmt.executeQuery();
-            stmt.close();
-            return result;
+            return stmt.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,9 +47,7 @@ public class DB {
 
     public int update(String sql) {
         try (PreparedStatement stmt = prepare(sql)) {
-            int result = stmt.executeUpdate();
-            stmt.close();
-            return result;
+            return stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }

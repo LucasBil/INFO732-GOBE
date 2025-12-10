@@ -2,16 +2,50 @@ package polytech.idu.models;
 
 import java.util.Objects;
 
-public class Message extends Model {
+import polytech.idu.annotations.Column;
+import polytech.idu.annotations.ManyToOne;
+import polytech.idu.annotations.Table;
+
+@Table(
+    name = "Message",
+    dependencies = {Profile.class}
+)
+public class Message {
+    @Column(name = "id", type = "INTEGER", primary = true, autoIncrement = true)
+    protected int id;
+
+    @ManyToOne(
+        target = Profile.class,
+        columnName = "sender",
+        refColumn = "id"
+    )
     protected Profile sender;
+
+    @ManyToOne(
+        target = Profile.class,
+        columnName = "receiver",
+        refColumn = "id"
+    )
     protected Profile receiver;
+
+    @Column(name = "text", type = "TEXT")
     protected String text;
 
+    public Message() {}
+    
     public Message(int id, Profile sender, Profile receiver, String text) {
-        super(id);
+        this.id = id;
         this.sender = sender;
         this.receiver = receiver;
         this.text = text;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Profile getSender() {

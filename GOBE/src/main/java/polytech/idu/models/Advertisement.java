@@ -5,25 +5,55 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
+import polytech.idu.annotations.Column;
+import polytech.idu.annotations.ManyToOne;
+import polytech.idu.annotations.Table;
 import polytech.idu.util.StringSanitizer;
 
-public abstract class Advertisement extends Model {
+@Table(
+    name = "Advertisement",
+    dependencies = {Profile.class, University.class}
+)
+public abstract class Advertisement {
+    @Column(name = "id", type = "INTEGER", primary = true, autoIncrement = true)
+    protected int id;
+
+    @Column(name="title", type="TEXT")
     protected String title;
+
+    @Column(name = "description", type = "TEXT")
     protected String description;
+
+    @ManyToOne(
+        target = Profile.class,
+        columnName = "holder",    // nom de la colonne dans la table Advertisement
+        refColumn = "id"
+    )
     protected Profile holder;
+
+    @Column(name = "price", type = "REAL")
     protected float price;
+
+    @Column(name = "date", type = "DATE")
     protected Date date;
+
+    @Column(name = "expire", type = "DATE")
     protected Date expire;
+
+    @ManyToOne(
+        target = University.class,
+        columnName = "university",   // nom de la colonne FK
+        refColumn = "id"
+    )
     protected University university;
+
+    @Column(name = "guarantee", type = "REAL")
     protected float guarantee;
     
-    
-    public String getTitle() {
-        return title;
-    }
-    
+    public Advertisement() {}
+
     public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire, University university, float guarantee) {
-        super(id);
+        this.id = id;
         this.title = title;
         this.description = description;
         this.holder = holder;
@@ -32,6 +62,18 @@ public abstract class Advertisement extends Model {
         this.expire = expire;
         this.university = university;
         this.guarantee = guarantee;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
     }
     
     public void setTitle(String title) {

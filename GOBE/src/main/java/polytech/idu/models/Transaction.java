@@ -1,21 +1,59 @@
 package polytech.idu.models;
 
-import polytech.idu.models.enums.Currency;
+import polytech.idu.annotations.Column;
+import polytech.idu.annotations.ManyToOne;
+import polytech.idu.annotations.Table;
 import java.util.Date;
 import java.util.Objects;
 
-public class Transaction extends Model {
+@Table(
+    name = "Transfer",
+    dependencies = {Profile.class, TimeSlot.class, Currency.class}
+)
+public class Transaction {
+    @Column(name = "id", type = "INTEGER", primary = true, autoIncrement = true)
+    protected int id;
+
+    @ManyToOne(
+        target = Profile.class,
+        columnName = "sender",
+        refColumn = "id"
+    )
     protected Profile sender;
+
+    @ManyToOne(
+        target = TimeSlot.class,
+        columnName = "timeslot",
+        refColumn = "id"
+    )
     protected TimeSlot timeslot;
+
+    @Column(name = "date", type = "DATE")
     protected Date date;
+
+    @ManyToOne(
+        target = Currency.class,
+        columnName = "currency",
+        refColumn = "id"
+    )
     protected Currency currency;
 
+    public Transaction() {}
+    
     public Transaction(int id, Profile sender, TimeSlot timeslot, Date date, Currency currency) {
-        super(id);
+        this.id = id;
         this.sender = sender;
         this.timeslot = timeslot;
         this.date = date;
         this.currency = currency;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Profile getSender() {

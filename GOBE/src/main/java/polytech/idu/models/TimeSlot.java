@@ -1,23 +1,63 @@
 package polytech.idu.models;
 
-import polytech.idu.models.enums.TimeSlotStatus;
+import polytech.idu.annotations.Column;
+import polytech.idu.annotations.ManyToOne;
+import polytech.idu.annotations.Table;
 
 import java.util.Date;
 
-public class TimeSlot extends Model {
+@Table(
+    name = "TimeSlot",
+    dependencies = {Profile.class, Advertisement.class}
+)
+public class TimeSlot {
+    @Column(name = "id", type = "INTEGER", primary = true, autoIncrement = true)
+    protected int id;
+
+    @ManyToOne(
+        target = Profile.class,
+        columnName = "profile",
+        refColumn = "id"
+    )
     protected Profile profile;
+
+    @ManyToOne(
+        target = Advertisement.class,
+        columnName = "advertisement",
+        refColumn = "id"
+    )
     protected Advertisement advertisement;
+
+    @Column(name = "ammount", type = "REAL")
     protected float ammount;
+
+    @Column(name = "date", type = "DATE")
     protected Date date;
+
+    @ManyToOne(
+        target = TimeSlotStatus.class,
+        columnName = "status",
+        refColumn = "id"
+    )
     protected TimeSlotStatus status;
     
+    public TimeSlot() {}
+    
     public TimeSlot(int id, Profile profile, Advertisement advertisement, float ammount, Date date, TimeSlotStatus status) {
-        super(id);
+        this.id = id;
         this.profile = profile;
         this.advertisement = advertisement;
         this.ammount = ammount;
         this.date = date;
         this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Profile getProfile() {
@@ -64,14 +104,14 @@ public class TimeSlot extends Model {
     public void statusChanged(){
         // Notify the profile about the status change
         if (this.profile != null) {
-            switch (this.status) {
-                case PENDING:
+            switch (this.status.name) {
+                case "PENDING":
                     System.out.println("Le TimeSlot est en attente de validation par l'annonceur.");
                     break;
-                case WAITING_PAYMENT:
+                case "WAITING_PAYMENT":
                     System.out.println("Le TimeSlot est en attente de paiement.");
                     break;
-                case AVAILABLE:
+                case "AVAILABLE":
                     System.out.println("Le TimeSlot est disponible.");
                     break;
                 default:
