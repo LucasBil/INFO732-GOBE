@@ -6,10 +6,20 @@ import polytech.idu.models.enums.GoodStatus;
 import java.util.Date;
 import java.util.Objects;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Good")
+@PrimaryKeyJoinColumn(name = "advertisement")
 public class Good extends Advertisement {
-    public Good(int id, String title, String description, Profile holder, float price, Date date, Date expire, String university,
+    public Good(int id, String title, String description, Profile holder, float price, Date date, Date expire,
+            University place,
             float guarantee) {
-        super(id, title, description, holder, price, date, expire, university, guarantee);
+        super(id, title, description, holder, price, date, expire, place, guarantee);
+    }
+
+    public Good() {
+        super();
     }
 
     protected GoodStatus status;
@@ -33,8 +43,10 @@ public class Good extends Advertisement {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
         Good good = (Good) o;
         return status == good.status && state == good.state;
     }

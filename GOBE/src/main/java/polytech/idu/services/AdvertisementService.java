@@ -24,10 +24,14 @@ public class AdvertisementService {
         for (AdvertisementObserver obs : observers) {
             if (obs instanceof Profile profile) {
                 for (String keyword : ad.getKeywords()) {
-                    if (profile.getUniversity() == ad.getUniversity())
+                    // TODO: Improve University matching (by ID or properties)
+                    if (profile.getUniversity() != null && ad.getPlace() != null &&
+                            profile.getUniversity().getId() == ad.getPlace().getId()) {
+
                         if (profile.getPreference().contains(keyword)) {
                             profile.onAdvertisementCreated(ad);
                             break;
+                        }
                     }
                 }
             }

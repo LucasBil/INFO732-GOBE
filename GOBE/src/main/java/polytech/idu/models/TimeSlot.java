@@ -3,19 +3,39 @@ package polytech.idu.models;
 import polytech.idu.models.enums.TimeSlotStatus;
 
 import java.util.Date;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "TimeSlot")
 public class TimeSlot extends Model {
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
     protected Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "advertisement_id")
     protected Advertisement advertisement;
-    protected float ammount;
+
+    @Column(name = "amount")
+    protected float amount;
+
+    @Column(name = "date")
     protected Date date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     protected TimeSlotStatus status;
-    
-    public TimeSlot(int id, Profile profile, Advertisement advertisement, float ammount, Date date, TimeSlotStatus status) {
+
+    public TimeSlot() {
+        super();
+    }
+
+    public TimeSlot(int id, Profile profile, Advertisement advertisement, float amount, Date date,
+            TimeSlotStatus status) {
         super(id);
         this.profile = profile;
         this.advertisement = advertisement;
-        this.ammount = ammount;
+        this.amount = amount;
         this.date = date;
         this.status = status;
     }
@@ -36,12 +56,12 @@ public class TimeSlot extends Model {
         this.advertisement = advertisement;
     }
 
-    public float getAmmount() {
-        return ammount;
+    public float getAmount() {
+        return amount;
     }
 
-    public void setAmmount(float ammount) {
-        this.ammount = ammount;
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 
     public Date getDate() {
@@ -61,7 +81,7 @@ public class TimeSlot extends Model {
         this.statusChanged();
     }
 
-    public void statusChanged(){
+    public void statusChanged() {
         // Notify the profile about the status change
         if (this.profile != null) {
             switch (this.status) {
@@ -82,7 +102,7 @@ public class TimeSlot extends Model {
 
     @Override
     public String toString() {
-        return "TimeSlot [profile=" + profile + ", advertisement=" + advertisement + ", ammount=" + ammount + ", date="
+        return "TimeSlot [profile=" + profile + ", advertisement=" + advertisement + ", amount=" + amount + ", date="
                 + date + ", status=" + status + "]";
     }
 
@@ -92,7 +112,7 @@ public class TimeSlot extends Model {
         int result = 1;
         result = prime * result + ((profile == null) ? 0 : profile.hashCode());
         result = prime * result + ((advertisement == null) ? 0 : advertisement.hashCode());
-        result = prime * result + Float.floatToIntBits(ammount);
+        result = prime * result + Float.floatToIntBits(amount);
         result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         return result;
@@ -117,7 +137,7 @@ public class TimeSlot extends Model {
                 return false;
         } else if (!advertisement.equals(other.advertisement))
             return false;
-        if (Float.floatToIntBits(ammount) != Float.floatToIntBits(other.ammount))
+        if (Float.floatToIntBits(amount) != Float.floatToIntBits(other.amount))
             return false;
         if (date == null) {
             if (other.date != null)

@@ -4,5 +4,6 @@ public enum TimeSlotStatus {
     AVAILABLE,
     PENDING,
     WAITING_PAYMENT,
-    COMFIRM
+    CONFIRMED,
+    REJECTED
 }

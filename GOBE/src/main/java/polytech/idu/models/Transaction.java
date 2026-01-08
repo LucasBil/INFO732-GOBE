@@ -4,11 +4,29 @@ import polytech.idu.models.enums.Currency;
 import java.util.Date;
 import java.util.Objects;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Transaction")
 public class Transaction extends Model {
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
     protected Profile sender;
+
+    @ManyToOne
+    @JoinColumn(name = "timeslot_id")
     protected TimeSlot timeslot;
+
+    @Column(name = "date")
     protected Date date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency")
     protected Currency currency;
+
+    public Transaction() {
+        super();
+    }
 
     public Transaction(int id, Profile sender, TimeSlot timeslot, Date date, Currency currency) {
         super(id);
@@ -52,9 +70,11 @@ public class Transaction extends Model {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Transaction that = (Transaction) o;
-        return Objects.equals(sender, that.sender) && Objects.equals(timeslot, that.timeslot) && Objects.equals(date, that.date) && Objects.equals(currency, that.currency);
+        return Objects.equals(sender, that.sender) && Objects.equals(timeslot, that.timeslot)
+                && Objects.equals(date, that.date) && Objects.equals(currency, that.currency);
     }
 
     @Override

@@ -3,26 +3,54 @@ package polytech.idu.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
+
+import jakarta.persistence.*;
 
 import polytech.idu.util.StringSanitizer;
 
+@Entity
+@Table(name = "Advertisement")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Advertisement extends Model {
+    @Column(name = "title")
     protected String title;
+
+    @Column(name = "description")
     protected String description;
+
+    @ManyToOne
+    @JoinColumn(name = "holder")
     protected Profile holder;
+
+    @Column(name = "price")
     protected float price;
+
+    @Column(name = "date")
     protected Date date;
+
+    @Column(name = "expire")
     protected Date expire;
-    protected String university;
+
+    @ManyToOne
+    @JoinColumn(name = "place")
+    protected University place;
+
+    @Column(name = "guarantee")
     protected float guarantee;
-    
-    
+
+    @Column(name = "type")
+    protected String type;
+
     public String getTitle() {
         return title;
     }
-    
-    public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire, String university, float guarantee) {
+
+    public Advertisement(int id, String title, String description, Profile holder, float price, Date date, Date expire,
+            University place, float guarantee) {
         super(id);
         this.title = title;
         this.description = description;
@@ -30,10 +58,14 @@ public abstract class Advertisement extends Model {
         this.price = price;
         this.date = date;
         this.expire = expire;
-        this.university = university;
+        this.place = place;
         this.guarantee = guarantee;
     }
-    
+
+    public Advertisement() {
+        super();
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -78,12 +110,12 @@ public abstract class Advertisement extends Model {
         this.expire = expire;
     }
 
-    public String getUniversity() {
-        return university;
+    public University getPlace() {
+        return place;
     }
 
-    public void setUniversity(String university) {
-        this.university = university;
+    public void setPlace(University place) {
+        this.place = place;
     }
 
     public float getGuarantee() {
@@ -94,12 +126,24 @@ public abstract class Advertisement extends Model {
         this.guarantee = guarantee;
     }
 
-    private static final Set<String> STOP_WORDS = Set.of(
-        "the","a","an","and","or","is","are","on","in","at","for",
-        "to","from","with","of","near","close","very","your","this",
-        "that","by","as","be","it","its"
-    );
+    public String getType() {
+        if (this.type == null) {
+            if (this instanceof polytech.idu.models.Service)
+                return "SERVICE";
+            if (this instanceof polytech.idu.models.Good)
+                return "GOOD";
+        }
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    private static final Set<String> STOP_WORDS = Set.of(
+            "the", "a", "an", "and", "or", "is", "are", "on", "in", "at", "for",
+            "to", "from", "with", "of", "near", "close", "very", "your", "this",
+            "that", "by", "as", "be", "it", "its");
 
     public ArrayList<String> getKeywords() {
         ArrayList<String> keywords = new ArrayList<>();
@@ -109,16 +153,19 @@ public abstract class Advertisement extends Model {
         String[] words = text.replaceAll("[^a-zA-Z0-9 ]", " ").split("\\s+");
 
         for (String w : words) {
-            if (w.length() < 3) continue; 
-            if (STOP_WORDS.contains(w)) continue;
-            if (!keywords.contains(w)) keywords.add(StringSanitizer.cleanString(w)); 
+            if (w.length() < 3)
+                continue;
+            if (STOP_WORDS.contains(w))
+                continue;
+            if (!keywords.contains(w))
+                keywords.add(StringSanitizer.cleanString(w));
         }
         return keywords;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, holder, price, date, expire, university, guarantee);
+        return Objects.hash(title, description, holder, price, date, expire, place, guarantee);
     }
 
     @Override
@@ -130,7 +177,7 @@ public abstract class Advertisement extends Model {
                 ", price=" + price +
                 ", date=" + date +
                 ", expire=" + expire +
-                ", university='" + university + '\'' +
+                ", place=" + place +
                 ", guarantee=" + guarantee +
                 '}';
     }
