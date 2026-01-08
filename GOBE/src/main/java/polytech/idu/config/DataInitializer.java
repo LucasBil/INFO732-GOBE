@@ -40,8 +40,9 @@ public class DataInitializer implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         University usmb;
-        University polytechSchool; // Renamed to avoid package conflict
+        University polytechSchool;
 
+        // 1. Create Universities
         if (universityRepository.count() == 0) {
             usmb = new University(0, "Université Savoie Mont Blanc", "Annecy");
             polytechSchool = new University(0, "Polytech Annecy-Chambéry", "Annecy-le-Vieux");
@@ -60,58 +61,77 @@ public class DataInitializer implements CommandLineRunner {
             }
         }
 
-        if (advertisementRepository.count() == 0) {
-            // Mock Profiles
-            Profile alice = new Profile(0, "Alice", "Dupont", new Date(), "alice@usmb.fr", usmb);
-            Profile bob = new Profile(0, "Bob", "Martin", new Date(), "bob@polytech.fr", polytechSchool);
-            alice = profileRepository.save(alice); // Save and capture ID/Entity
-            bob = profileRepository.save(bob);
+        // 2. Create Profiles
+        if (profileRepository.findByEmail("maxence@gmail.com") == null) {
+            // Maxence Ambert (USMB)
+            Profile maxence = new Profile(0, "Maxence", "Ambert", new Date(), "maxence@gmail.com", usmb);
+            maxence.addFollowedKeyword("vélo");
+            maxence.addFollowedKeyword("informatique");
+            maxence = profileRepository.save(maxence);
 
-            // Mock Goods
-            Good fridge = new Good(0, "Vends Mini Frigo",
-                    "Idéal étudiant, fonctionne parfaitement. A venir chercher sur place.",
-                    null, 80.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 30),
+            // Corentin Campillo (USMB)
+            Profile corentin = new Profile(0, "Corentin", "Campillo", new Date(), "corentin@gmail.com", usmb);
+            corentin.addFollowedKeyword("cuisine");
+            corentin = profileRepository.save(corentin);
+
+            // Extra User for diversity (Polytech)
+            Profile alice = new Profile(0, "Alice", "Wonder", new Date(), "alice@polytech.fr", polytechSchool);
+            alice = profileRepository.save(alice);
+
+            // 3. Create Goods & Services
+
+            // Maxence sells a Camera (Good)
+            Good camera = new Good(0, "Appareil Photo Canon",
+                    "Canon EOS 2000D avec objectif 18-55mm. Très peu servi, excellent état.",
+                    null, 350.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 60),
                     usmb, 0.0f);
-            fridge.setHolder(alice);
-            fridge.setStatus(GoodStatus.AVAILABLE);
-            fridge.setState(GoodState.B);
+            camera.setHolder(maxence);
+            camera.setStatus(GoodStatus.AVAILABLE);
+            camera.setState(GoodState.A);
+            advertisementRepository.save(camera);
 
-            Good bike = new Good(0, "Vélo VTT", "VTT Rockrider, quelques rayures mais roule bien.",
-                    null, 120.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 30),
-                    polytechSchool, 0.0f);
-            bike.setHolder(bob);
-            bike.setStatus(GoodStatus.AVAILABLE);
-            bike.setState(GoodState.C);
-
-            // Mock Service
-            Service mathTutoring = new Service(0, "Cours de Soutien Maths",
-                    "Etudiant ingénieur donne cours de maths niveau Lycée.",
-                    null, 15.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 60),
-                    polytechSchool, 0.0f);
-            mathTutoring.setHolder(bob);
-
-            Service movingHelp = new Service(0, "Aide Déménagement",
-                    "Bras musclés pour porter vos cartons ce week-end !",
-                    null, 10.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 7),
+            // Corentin sells a Textbook (Good)
+            Good book = new Good(0, "Livre Algorithmique",
+                    "Introduction aux algorithmes, 3ème édition. Quelques surlignages.",
+                    null, 25.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 30),
                     usmb, 0.0f);
-            movingHelp.setHolder(alice);
+            book.setHolder(corentin);
+            book.setStatus(GoodStatus.AVAILABLE);
+            book.setState(GoodState.B);
+            advertisementRepository.save(book);
 
-            advertisementRepository.save(fridge);
-            advertisementRepository.save(bike);
-            mathTutoring = advertisementRepository.save(mathTutoring); // Save to capture ID
-            advertisementRepository.save(movingHelp);
+            // Corentin offers Tutoring (Service)
+            Service tutoring = new Service(0, "Soutien Scolaire Physique",
+                    "Etudiant sérieux propose cours de Physique/Chimie niveau Collège/Lycée.",
+                    null, 18.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 90),
+                    usmb, 0.0f);
+            tutoring.setHolder(corentin);
+            advertisementRepository.save(tutoring);
 
-            // Mock Interaction: Alice messages Bob about math
-            Message msg1 = new Message(0, alice, bob, "Bonjour, je suis intéressée par les cours de maths.",
-                    new Date());
+            // Alice offers Cleaning (Service)
+            Service cleaning = new Service(0, "Ménage Appartement",
+                    "Je propose de faire le ménage avant vos états des lieux.",
+                    null, 12.0f, new Date(), new Date(System.currentTimeMillis() + 86400000L * 30),
+                    polytechSchool, 0.0f);
+            cleaning.setHolder(alice);
+            advertisementRepository.save(cleaning);
+
+            // 4. Create Interactions (Messages & Bookings)
+
+            // Corentin asks Maxence about the Camera
+            Message msg1 = new Message(0, corentin, maxence, "Bonjour Maxence, le prix est-il négociable ?",
+                    new Date(System.currentTimeMillis() - 86400000L));
             messageRepository.save(msg1);
+            Message msg2 = new Message(0, maxence, corentin,
+                    "Salut Corentin, je peux descendre à 330€ si tu viens le chercher.", new Date());
+            messageRepository.save(msg2);
 
-            // Mock Interaction: Alice books a slot for math
-            TimeSlot ts1 = new TimeSlot(0, alice, mathTutoring, 15.0f, new Date(System.currentTimeMillis() + 86400000L),
+            // Alice books a slot for Tutoring with Corentin
+            TimeSlot ts1 = new TimeSlot(0, alice, tutoring, 18.0f, new Date(System.currentTimeMillis() + 86400000L * 2),
                     TimeSlotStatus.PENDING);
             timeSlotRepository.save(ts1);
 
-            System.out.println("MOCK DATA GENERATED: Profiles, Ads, Messages, TimeSlots.");
+            System.out.println("MOCK DATA GENERATED: Maxence, Corentin, Alice and their ads/interactions.");
         }
     }
 }
